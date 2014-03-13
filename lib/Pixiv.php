@@ -1,7 +1,8 @@
 <?php
 
 class Pixiv {
-    const LOGIN_URL = 'http://www.pixiv.net/login.php';
+    const LOGIN_URL  = 'http://www.pixiv.net/login.php';
+    const MYPAGE_URL = 'http://www.pixiv.net/mypage.php';
 
     protected $ch;
     protected $is_logged_in = false;
@@ -34,6 +35,16 @@ class Pixiv {
         curl_setopt($this->ch, CURLOPT_COOKIESESSION,true);
         curl_setopt($this->ch, CURLOPT_COOKIEJAR,$this->cookie);
         curl_setopt($this->ch, CURLOPT_COOKIEFILE,$this->cookie);
+
+        if(file_exists($this->cookie)){
+            $response = $this->getPage(self::MYPAGE_URL);
+            if(preg_match('/プロフィールを見る/',$response)){
+                $this->is_logged_in = true;
+            }
+        }
+        if(!$this->is_logged_in()){
+            $this->login();
+        }
     }
 
     /**
@@ -81,11 +92,7 @@ class Pixiv {
     /**
      * URLを取得する
      */
-    public function getPage($url,$data = array()){
-        if(!$this->is_logged_in()){
-            $this->login();
-        }
-
+    public function getPage($url,$data=array()){
         curl_setopt($this->ch, CURLOPT_URL,$url);
         curl_setopt($this->ch, CURLOPT_HTTPGET, true);
         if($data){
