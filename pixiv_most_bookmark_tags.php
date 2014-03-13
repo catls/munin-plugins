@@ -14,6 +14,7 @@
 
 require_once dirname(__FILE__).'/lib/Pixiv.php';
 require_once dirname(__FILE__).'/lib/simple_html_dom.php';
+require_once dirname(__FILE__).'/locale/PixivTag.php';
 
 $user     = @getenv('pixiv_user');
 $password = @getenv('pixiv_pass');
@@ -35,7 +36,7 @@ else {
 
 
 function report() {
-    global $user,$password,$url;
+    global $user,$password,$url,$locale;
 
     $Pixiv = new Pixiv($user,$password);
     $contents = $Pixiv->getPage($url);
@@ -49,9 +50,12 @@ function report() {
                 $dt->next_sibling()->plaintext."<br />";
                 foreach($dt->next_sibling()->find('li') as $dd){
                     $tag_name = $dd->plaintext;
+                    $tag_name_en = (array_key_exists($tag_name,$locale) && $locale[$tag_name])
+                        ? $locale[$tag_name]
+                        : 'no_locale_data';
 
                     if($tag_name != "未分類"){
-                        echo "Rank{$i}.value {$value}\n";
+                        echo "{$tag_name_en}.value {$value}\n";
                         if($i++ >= 15){
                             break 3;
                         }
@@ -79,7 +83,7 @@ function autoconf() {
 }
 
 function config() {
-    global $user,$password,$url;
+    global $user,$password,$url,$locale;
 
     echo "graph_title pixiv most bookmark tags ";
     echo "graph_info  \n";
@@ -98,10 +102,13 @@ function config() {
                 $dt->next_sibling()->plaintext."<br />";
                 foreach($dt->next_sibling()->find('li') as $dd){
                     $tag_name = $dd->plaintext;
+                    $tag_name_en = (array_key_exists($tag_name,$locale) && $locale[$tag_name])
+                        ? $locale[$tag_name]
+                        : 'no_locale_data';
 
                     if($tag_name != "未分類"){
-                        echo "Rank{$i}.label Rank {$i}\n";
-                        echo "Rank{$i}.info {$tag_name}\n";
+                        echo "{$tag_name_en}.label {$tag_name_en}\n";
+                        echo "{$tag_name_en}.info {$tag_name}\n";
                         if($i++ >= 15){
                             break 3;
                         }
@@ -115,3 +122,60 @@ function config() {
 }
 
 
+
+function getTags() {
+    global $user,$password,$url,$locale;
+
+    
+    $Pixiv = new Pixiv($user,$password);
+
+    $contents = $Pixiv->getPage($url);
+    $html = str_get_html($contents);
+    if($html != false && method_exists($html,'find')){
+        $i = 1;
+        foreach($html->find('.tag-list') as $element){
+            foreach($element->find('dt') as $dt){
+                $value = $dt->plaintext;
+                $dt->next_sibling()->plaintext."<br />";
+                foreach($dt->next_sibling()->find('li') as $dd){
+                    $tag_name = $dd->plaintext;
+                    $locale[$tag_name] = (array_key_exists($tag_name,$locale))
+                        ? $locale[$tag_name]
+                        : '';
+                }
+            }
+        }
+        $html->clear();
+    }
+    unset($html);
+
+    $url_list = array(
+        'http://www.pixiv.net/tags.php',
+        'http://www.pixiv.net/tags.php?p=2',
+        'http://www.pixiv.net/tags.php?p=3',
+    );
+    foreach($url_list as $url){
+        $contents = $Pixiv->getPage($url);
+        $html = str_get_html($contents);
+        if($html != false && method_exists($html,'find')){
+            foreach($html->find('.tag-list') as $element){
+                foreach($element->find('.tag-name') as $li){
+                    $tag_name = $li->plaintext;
+                    $locale[$tag_name] = (array_key_exists($tag_name,$locale))
+                        ? $locale[$tag_name]
+                        : '';
+                }
+            }
+            $html->clear();
+        }
+        unset($html);
+    }
+
+    echo "<?php\n";
+    echo "\$locale = array(\n";
+    foreach($locale as $key => $val){
+        echo "\t'{$key}' => '{$val}',\n";
+    }
+    echo ");";
+}
+?>
