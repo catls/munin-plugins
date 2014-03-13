@@ -11,7 +11,7 @@ class Pixiv {
     public $pixiv_id;
     public $password;
 
-    public function __construct($pixiv_id='',$password=''){
+    public function __construct($pixiv_id='',$password='',$proxy = ''){
         if($pixiv_id) $this->pixiv_id = $pixiv_id;
         if($password) $this->password = $password;
 
@@ -28,6 +28,7 @@ class Pixiv {
             'Connection: keep-alive',
         );
         $this->ch = curl_init();
+
         curl_setopt($this->ch, CURLOPT_HEADER, 0);
         curl_setopt($this->ch, CURLOPT_HTTPHEADER,$headers);
         curl_setopt($this->ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -35,6 +36,7 @@ class Pixiv {
         curl_setopt($this->ch, CURLOPT_COOKIESESSION,true);
         curl_setopt($this->ch, CURLOPT_COOKIEJAR,$this->cookie);
         curl_setopt($this->ch, CURLOPT_COOKIEFILE,$this->cookie);
+        if($proxy) $this->setProxy($proxy);
 
         if(file_exists($this->cookie)){
             $response = $this->getPage(self::MYPAGE_URL);
