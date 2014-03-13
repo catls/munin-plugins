@@ -51,7 +51,7 @@ function report() {
                     $tag_name = $dd->plaintext;
 
                     if($tag_name != "未分類"){
-                        echo "No{$i}.value {$value}\n";
+                        echo "Rank{$i}.value {$value}\n";
                         if($i++ >= 15){
                             break 3;
                         }
@@ -100,9 +100,8 @@ function config() {
                     $tag_name = $dd->plaintext;
 
                     if($tag_name != "未分類"){
-                        echo "No{$i}.label {$i}\n";
-                        echo "No{$i}.info {$tag_name}\n";
-                        echo "No{$i}.value {$value}\n";
+                        echo "Rank{$i}.label Rank {$i}\n";
+                        echo "Rank{$i}.info {$tag_name}\n";
                         if($i++ >= 15){
                             break 3;
                         }
