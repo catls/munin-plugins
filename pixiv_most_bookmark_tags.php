@@ -47,7 +47,6 @@ function report() {
         foreach($html->find('.tag-list') as $element){
             foreach($element->find('dt') as $dt){
                 $value = $dt->plaintext;
-                $dt->next_sibling()->plaintext."<br />";
                 foreach($dt->next_sibling()->find('li') as $dd){
                     $tag_name = $dd->plaintext;
                     $tag_name_en = (array_key_exists($tag_name,$locale) && $locale[$tag_name])
@@ -99,7 +98,6 @@ function config() {
         foreach($html->find('.tag-list') as $element){
             foreach($element->find('dt') as $dt){
                 $value = $dt->plaintext;
-                $dt->next_sibling()->plaintext."<br />";
                 foreach($dt->next_sibling()->find('li') as $dd){
                     $tag_name = $dd->plaintext;
                     $tag_name_en = (array_key_exists($tag_name,$locale) && $locale[$tag_name])
@@ -136,7 +134,6 @@ function getTags() {
         foreach($html->find('.tag-list') as $element){
             foreach($element->find('dt') as $dt){
                 $value = $dt->plaintext;
-                $dt->next_sibling()->plaintext."<br />";
                 foreach($dt->next_sibling()->find('li') as $dd){
                     $tag_name = $dd->plaintext;
                     $locale[$tag_name] = (array_key_exists($tag_name,$locale))
