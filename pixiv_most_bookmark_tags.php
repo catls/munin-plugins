@@ -83,7 +83,7 @@ function config() {
 
     echo "graph_title pixiv most bookmark tags ";
     echo "graph_info  \n";
-    echo "graph_category net:services\n";
+    echo "graph_category web:services\n";
     echo "graph yes\n";
     echo "graph_vlabel Counts\n";
 
