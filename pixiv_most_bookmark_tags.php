@@ -89,6 +89,7 @@ function config() {
     echo "graph_category web:services\n";
     echo "graph yes\n";
     echo "graph_vlabel Counts\n";
+    echo "graph_scale no\n";
 
     $Pixiv = new Pixiv($user,$password);
     $contents = $Pixiv->getPage($url);
