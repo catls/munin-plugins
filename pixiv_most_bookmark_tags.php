@@ -51,7 +51,7 @@ function report() {
                     $tag_name = $dd->plaintext;
                     $tag_name_en = (array_key_exists($tag_name,$locale) && $locale[$tag_name])
                         ? $locale[$tag_name]
-                        : 'no_locale_data';
+                        : $tag_name;
 
                     if($tag_name != "未分類"){
                         echo "{$tag_name_en}.value {$value}\n";
@@ -102,7 +102,7 @@ function config() {
                     $tag_name = $dd->plaintext;
                     $tag_name_en = (array_key_exists($tag_name,$locale) && $locale[$tag_name])
                         ? $locale[$tag_name]
-                        : 'no_locale_data';
+                        : $tag_name;
 
                     if($tag_name != "未分類"){
                         echo "{$tag_name_en}.label {$tag_name_en}\n";
