@@ -124,7 +124,6 @@ function config() {
 function getTags() {
     global $user,$password,$url,$locale;
 
-    
     $Pixiv = new Pixiv($user,$password);
 
     $contents = $Pixiv->getPage($url);
@@ -171,7 +170,9 @@ function getTags() {
     echo "<?php\n";
     echo "\$locale = array(\n";
     foreach($locale as $key => $val){
-        echo "\t'{$key}' => '{$val}',\n";
+        if(!preg_match('/^[a-zA-Z0-9]+$/',$key)){
+            echo "\t'{$key}' => '{$val}',\n";
+        }
     }
     echo ");";
 }
