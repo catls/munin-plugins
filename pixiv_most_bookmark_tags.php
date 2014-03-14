@@ -146,27 +146,27 @@ function getTags() {
     }
     unset($html);
 
-    $url_list = array(
-        'http://www.pixiv.net/tags.php',
-        'http://www.pixiv.net/tags.php?p=2',
-        'http://www.pixiv.net/tags.php?p=3',
-    );
-    foreach($url_list as $url){
-        $contents = $Pixiv->getPage($url);
-        $html = str_get_html($contents);
-        if($html != false && method_exists($html,'find')){
-            foreach($html->find('.tag-list') as $element){
-                foreach($element->find('.tag-name') as $li){
-                    $tag_name = $li->plaintext;
-                    $locale[$tag_name] = (array_key_exists($tag_name,$locale))
-                        ? $locale[$tag_name]
-                        : '';
-                }
-            }
-            $html->clear();
-        }
-        unset($html);
-    }
+#    $url_list = array(
+#        'http://www.pixiv.net/tags.php',
+#        'http://www.pixiv.net/tags.php?p=2',
+#        'http://www.pixiv.net/tags.php?p=3',
+#    );
+#    foreach($url_list as $url){
+#        $contents = $Pixiv->getPage($url);
+#        $html = str_get_html($contents);
+#        if($html != false && method_exists($html,'find')){
+#            foreach($html->find('.tag-list') as $element){
+#                foreach($element->find('.tag-name') as $li){
+#                    $tag_name = $li->plaintext;
+#                    $locale[$tag_name] = (array_key_exists($tag_name,$locale))
+#                        ? $locale[$tag_name]
+#                        : '';
+#                }
+#            }
+#            $html->clear();
+#        }
+#        unset($html);
+#    }
 
     echo "<?php\n";
     echo "\$locale = array(\n";
