@@ -1,6 +1,6 @@
 <?php
 $locale = array(
-	'未分類' => '',
+	'未分類' => 'Uncategorized',
 	'オリジナル' => 'Original',
 	'艦これ' => 'Kankore',
 	'艦隊これくしょん' => 'Kantai_Collection',
