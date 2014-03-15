@@ -3,14 +3,16 @@
 /**
 * README
 *
-* [pixiv]
-* env.pixiv_user munin
-* env.pixiv_pass munin
+* /etc/munin/plugin-conf.d/pixiv
+*
+* [pixiv*]
+* user root
+* env.pixiv_user ユーザ名
+* env.pixiv_pass パスワード
 */
 
 #%# family=auto
 #%# capabilities=autoconf
-
 
 require_once dirname(__FILE__).'/lib/Pixiv.php';
 require_once dirname(__FILE__).'/lib/simple_html_dom.php';
@@ -18,6 +20,9 @@ require_once dirname(__FILE__).'/locale/PixivTag.php';
 
 $user     = @getenv('pixiv_user');
 $password = @getenv('pixiv_pass');
+$ignore_tags = array(
+	'未分類',
+);
 
 $url = 'http://www.pixiv.net/bookmark_tag_all.php';
 
@@ -36,7 +41,7 @@ else {
 
 
 function report() {
-    global $user,$password,$url,$locale;
+    global $user,$password,$ignore_tags,$url,$locale;
 
     $Pixiv = new Pixiv($user,$password);
     $contents = $Pixiv->getPage($url);
@@ -53,7 +58,9 @@ function report() {
                         ? $locale[$tag_name]
                         : $tag_name;
 
-                    if($tag_name != "未分類"){
+                    if(!in_array($tag_name,$ignore_tags)
+                        && !in_array($tag_name_en,$ignore_tags)
+                    ){
                         echo "{$tag_name_en}.value {$value}\n";
                         if($i++ >= 15){
                             break 3;
@@ -82,7 +89,7 @@ function autoconf() {
 }
 
 function config() {
-    global $user,$password,$url,$locale;
+    global $user,$password,$ignore_tags,$url,$locale;
 
     echo "graph_title pixiv most bookmark tags ";
     echo "graph_info  \n";
@@ -105,7 +112,9 @@ function config() {
                         ? $locale[$tag_name]
                         : $tag_name;
 
-                    if($tag_name != "未分類"){
+                    if(!in_array($tag_name,$ignore_tags)
+                        && !in_array($tag_name_en,$ignore_tags)
+                    ){
                         echo "{$tag_name_en}.label {$tag_name_en}\n";
                         echo "{$tag_name_en}.info {$tag_name}\n";
                         if($i++ >= 15){
