@@ -50,22 +50,20 @@ function report() {
     $html = str_get_html($contents);
     if($html != false && method_exists($html,'find')){
         $i = 1;
-        foreach($html->find('.tag-list') as $element){
-            foreach($element->find('dt') as $dt){
-                $value = $dt->plaintext;
-                foreach($dt->next_sibling()->find('li') as $dd){
-                    $tag_name = $dd->plaintext;
-                    $tag_name_en = (array_key_exists($tag_name,$locale) && $locale[$tag_name])
-                        ? $locale[$tag_name]
-                        : $tag_name;
+        foreach($html->find('.tag-list dt') as $dt){
+            $value = $dt->plaintext;
+            foreach($dt->next_sibling()->find('li') as $dd){
+                $tag_name = $dd->plaintext;
+                $tag_name_en = (array_key_exists($tag_name,$locale) && $locale[$tag_name])
+                    ? $locale[$tag_name]
+                    : $tag_name;
 
-                    if(!in_array($tag_name,$ignore_tags)
-                        && !in_array($tag_name_en,$ignore_tags)
-                    ){
-                        echo "{$tag_name_en}.value {$value}\n";
-                        if($i++ >= 15){
-                            break 3;
-                        }
+                if(!in_array($tag_name,$ignore_tags)
+                    && !in_array($tag_name_en,$ignore_tags)
+                ){
+                    echo "{$tag_name_en}.value {$value}\n";
+                    if($i++ >= 15){
+                        break 2;
                     }
                 }
             }
@@ -104,23 +102,21 @@ function config() {
     $html = str_get_html($contents);
     if($html != false && method_exists($html,'find')){
         $i = 1;
-        foreach($html->find('.tag-list') as $element){
-            foreach($element->find('dt') as $dt){
-                $value = $dt->plaintext;
-                foreach($dt->next_sibling()->find('li') as $dd){
-                    $tag_name = $dd->plaintext;
-                    $tag_name_en = (array_key_exists($tag_name,$locale) && $locale[$tag_name])
-                        ? $locale[$tag_name]
-                        : $tag_name;
+        foreach($html->find('.tag-list dt') as $dt){
+            $value = $dt->plaintext;
+            foreach($dt->next_sibling()->find('li') as $dd){
+                $tag_name = $dd->plaintext;
+                $tag_name_en = (array_key_exists($tag_name,$locale) && $locale[$tag_name])
+                    ? $locale[$tag_name]
+                    : $tag_name;
 
-                    if(!in_array($tag_name,$ignore_tags)
-                        && !in_array($tag_name_en,$ignore_tags)
-                    ){
-                        echo "{$tag_name_en}.label {$tag_name_en}\n";
-                        echo "{$tag_name_en}.info {$tag_name}\n";
-                        if($i++ >= 15){
-                            break 3;
-                        }
+                if(!in_array($tag_name,$ignore_tags)
+                    && !in_array($tag_name_en,$ignore_tags)
+                ){
+                    echo "{$tag_name_en}.label {$tag_name_en}\n";
+                    echo "{$tag_name_en}.info {$tag_name}\n";
+                    if($i++ >= 15){
+                        break 2;
                     }
                 }
             }
@@ -141,15 +137,13 @@ function getTags() {
     $html = str_get_html($contents);
     if($html != false && method_exists($html,'find')){
         $i = 1;
-        foreach($html->find('.tag-list') as $element){
-            foreach($element->find('dt') as $dt){
-                $value = $dt->plaintext;
-                foreach($dt->next_sibling()->find('li') as $dd){
-                    $tag_name = $dd->plaintext;
-                    $locale[$tag_name] = (array_key_exists($tag_name,$locale))
-                        ? $locale[$tag_name]
-                        : '';
-                }
+        foreach($html->find('.tag-list dt') as $dt){
+            $value = $dt->plaintext;
+            foreach($dt->next_sibling()->find('li') as $dd){
+                $tag_name = $dd->plaintext;
+                $locale[$tag_name] = (array_key_exists($tag_name,$locale))
+                    ? $locale[$tag_name]
+                    : '';
             }
         }
         $html->clear();
