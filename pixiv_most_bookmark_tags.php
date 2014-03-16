@@ -3,6 +3,7 @@
 /**
 * README
 *
+* @example Example entry for configuration:
 * /etc/munin/plugin-conf.d/pixiv
 *
 * [pixiv*]
