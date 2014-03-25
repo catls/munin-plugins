@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpunit>
+  <php>
+    <var name="PIXIV_ID" value="hoge" />
+    <var name="PASSWORD" value="hoge" />
+  </php>
+</phpunit>
