@@ -44,7 +44,10 @@ class Pixiv {
                 $this->is_logged_in = true;
             }
         }
-        if(!$this->is_logged_in()){
+        if(!$this->isLoggedIn()
+            && $this->pixiv_id
+            && $this->password
+        ){
             $this->login();
         }
     }
@@ -80,14 +83,15 @@ class Pixiv {
 
         if(preg_match('/プロフィールを見る/',$response)){
             $this->is_logged_in = true;
+            return true;
         }
         else{
             echo "ログインに失敗しました。\n";
+            return false;
         }
-        return $response;
     }
 
-    public function is_logged_in(){
+    public function isLoggedIn(){
         return $this->is_logged_in;
     }
 

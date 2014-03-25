@@ -78,7 +78,7 @@ function autoconf() {
 
     $Pixiv = new Pixiv();
     $Pixiv->login($user,$password);
-    if ($Pixiv->is_logged_in() == true) {
+    if ($Pixiv->isLoggedIn() == true) {
         echo "yes\n";
     }
     else{
