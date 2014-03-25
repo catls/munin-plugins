@@ -22,7 +22,7 @@ require_once dirname(__FILE__).'/locale/PixivTag.php';
 $user     = @getenv('pixiv_user');
 $password = @getenv('pixiv_pass');
 $ignore_tags = array(
-	'未分類',
+    '未分類',
 );
 
 $url = 'http://www.pixiv.net/bookmark_tag_all.php';

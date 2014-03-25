@@ -54,6 +54,8 @@ class Pixiv {
 
     /**
      * Proxyをセットする
+     *
+     * @param string $proxy セットするプロクシ(IP:Port)
      */
     public function setProxy($proxy){
         list($proxy_ip,$proxy_port) = explode(':',$proxy);
@@ -64,6 +66,10 @@ class Pixiv {
 
     /**
      * ログインする
+     *
+     * @param string $pixiv_id ログインID
+     * @param string $password ログインパスワード
+     * @return bool
      */
     public function login($pixiv_id='',$password=''){
         if($pixiv_id) $this->pixiv_id = $pixiv_id;
@@ -97,6 +103,10 @@ class Pixiv {
 
     /**
      * URLを取得する
+     *
+     * @param string $url ページURL
+     * @param string $data (optional) POSTするデータ
+     * @return string $response 取得HTML
      */
     public function getPage($url,$data=array()){
         curl_setopt($this->ch, CURLOPT_URL,$url);
